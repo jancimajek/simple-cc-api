@@ -1,5 +1,5 @@
 import { ValidationError } from 'jsonschema';
-import { createCardValidator } from '../validators';
+import { createCardValidator, cardOperationValidator } from '../validators';
 
 describe('createCardValidator', () => {
   it('should return a function', () => {
@@ -34,6 +34,47 @@ describe('createCardValidator', () => {
     const req = { body };
 
     const validate = () => createCardValidator()(req, {}, () => {});
+    expect(validate).toThrow(ValidationError);
+  });
+});
+
+describe('cardOperationValidator', () => {
+  it('should return a function', () => {
+    expect(typeof cardOperationValidator()).toBe('function');
+  });
+
+  it.each([
+    {
+      operation: 'charge',
+      ammount: '£100.00',
+    },
+    {
+      operation: 'credit',
+      ammount: '£100.00',
+    },
+  ])('should not throw error and call next on valid input', (body) => {
+    const req = { body };
+    const next = jest.fn();
+    const validate = () => cardOperationValidator()(req, {}, next);
+    expect(validate).not.toThrow();
+    expect(next).toHaveBeenCalled();
+  });
+
+  it.each([
+    {},
+    { operation: 'credit' },
+    { ammount: '£100.00' },
+    { operation: 'invalid', ammount: '£100.00' },
+    { operation: 'charge', ammount: '100.00' },
+    { operation: 'charge', ammount: '£100' },
+    { operation: 'charge', ammount: '£100.0' },
+    { operation: 'charge', ammount: '£100.000' },
+    { operation: 'charge', ammount: 100 },
+    // @TODO add more cases
+  ])('should throw error on invalid input', (body) => {
+    const req = { body };
+
+    const validate = () => cardOperationValidator()(req, {}, () => {});
     expect(validate).toThrow(ValidationError);
   });
 });
