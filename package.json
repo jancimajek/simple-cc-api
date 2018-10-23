@@ -1,10 +1,14 @@
 {
   "name": "simple-cc-api",
   "version": "1.0.0",
-  "description": "Simple credit card processing API",
+  "description": "Simple Credit Card API",
   "main": "src/server.js",
   "author": "Jan Majek",
   "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/jancimajek/simple-cc-api.git"
+  },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "body-parser": "^1.18.3",
