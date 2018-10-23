@@ -1,4 +1,5 @@
 import Card from '../card';
+import { InvalidCardNumberError, CreditLimitExeededError } from '../errors';
 
 describe('Create card', () => {
   it('should create new card with correct number, limit and balance when CC number is valid', () => {
@@ -11,7 +12,10 @@ describe('Create card', () => {
   });
 
   it('should throw error when CC number is invalid', () => {
-    expect(() => new Card('name', 79927398710, 1000)).toThrow('Invalid card number: 79927398710');
+    const createInvalidCard = () => new Card('name', 79927398710, 1000);
+
+    expect(createInvalidCard).toThrow(InvalidCardNumberError);
+    expect(createInvalidCard).toThrow('Invalid card number: 79927398710');
   });
 });
 
@@ -26,7 +30,10 @@ describe('Charge card', () => {
 
   it('should throw error when charge goes over the limit', () => {
     const card = new Card('name', 79927398713, 1000);
-    expect(() => card.charge(1000.01)).toThrow('Credit limit exceeded for card number: 79927398713');
+    const overchargeCard = () => card.charge(1000.01);
+
+    expect(overchargeCard).toThrow(CreditLimitExeededError);
+    expect(overchargeCard).toThrow('Credit limit exceeded for card number: 79927398713');
   });
 });
 

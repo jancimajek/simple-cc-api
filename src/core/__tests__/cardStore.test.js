@@ -1,5 +1,7 @@
 import CardStore from '../cardStore';
 import Card from '../card';
+import { DuplicateCardError, CardDoesNotExistError } from '../errors';
+
 
 describe('Card Store', () => {
   it('should be empty at beginning', () => {
@@ -21,8 +23,12 @@ describe('Card Store', () => {
     const card2 = new Card('name', 79927398713, 1000);
     cardStore.add(card);
 
-    expect(() => cardStore.add(card)).toThrow('Card already exists: name');
-    expect(() => cardStore.add(card2)).toThrow('Card already exists: name');
+    const addCard = c => () => cardStore.add(c);
+
+    expect(addCard(card)).toThrow(DuplicateCardError);
+    expect(addCard(card)).toThrow('Card already exists: name');
+    expect(addCard(card2)).toThrow(DuplicateCardError);
+    expect(addCard(card2)).toThrow('Card already exists: name');
   });
 
   it('should get all cards', () => {
@@ -49,7 +55,9 @@ describe('Card Store', () => {
 
   it('should throw error when getting card that does not exist', () => {
     const cardStore = new CardStore();
+    const getCard = () => cardStore.get('name');
 
-    expect(() => cardStore.get('name')).toThrow('Card does not exist: name');
+    expect(getCard).toThrow(CardDoesNotExistError);
+    expect(getCard).toThrow('Card does not exist: name');
   });
 });

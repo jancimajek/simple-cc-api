@@ -1,3 +1,5 @@
+import { DuplicateCardError, CardDoesNotExistError } from './errors';
+
 export default class CardStore {
   constructor() {
     this.store = {};
@@ -6,7 +8,7 @@ export default class CardStore {
   add(card) {
     const { name } = card;
     if (this.store[name]) {
-      throw new Error(`Card already exists: ${name}`);
+      throw new DuplicateCardError(`Card already exists: ${name}`);
     }
 
     this.store[name] = card;
@@ -18,7 +20,7 @@ export default class CardStore {
 
   get(name) {
     if (!this.store[name]) {
-      throw new Error(`Card does not exist: ${name}`);
+      throw new CardDoesNotExistError(`Card does not exist: ${name}`);
     }
     return this.store[name];
   }
