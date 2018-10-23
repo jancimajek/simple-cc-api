@@ -11,4 +11,8 @@ export default class CardStore {
 
     this.store[name] = card;
   }
+
+  getAll() {
+    return Object.values(this.store);
+  }
 }

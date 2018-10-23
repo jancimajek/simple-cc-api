@@ -24,4 +24,18 @@ describe('Card Store', () => {
     expect(() => cardStore.add(card)).toThrow('Card already exists: name');
     expect(() => cardStore.add(card2)).toThrow('Card already exists: name');
   });
+
+  it('should get all cards', () => {
+    const cardStore = new CardStore();
+    const card = new Card('name', 79927398713, 1000);
+    const card2 = new Card('name2', 4539058051444578, 1000);
+
+    expect(cardStore.getAll()).toEqual([]);
+
+    cardStore.add(card);
+    expect(cardStore.getAll()).toEqual([card]);
+
+    cardStore.add(card2);
+    expect(cardStore.getAll()).toEqual([card, card2]);
+  });
 });
