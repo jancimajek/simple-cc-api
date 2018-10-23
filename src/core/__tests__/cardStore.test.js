@@ -38,4 +38,18 @@ describe('Card Store', () => {
     cardStore.add(card2);
     expect(cardStore.getAll()).toEqual([card, card2]);
   });
+
+  it('should get specific card if it exists', () => {
+    const cardStore = new CardStore();
+    const card = new Card('name', 79927398713, 1000);
+    cardStore.add(card);
+
+    expect(cardStore.get('name')).toBe(card);
+  });
+
+  it('should throw error when getting card that does not exist', () => {
+    const cardStore = new CardStore();
+
+    expect(() => cardStore.get('name')).toThrow('Card does not exist: name');
+  });
 });

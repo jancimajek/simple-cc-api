@@ -15,4 +15,11 @@ export default class CardStore {
   getAll() {
     return Object.values(this.store);
   }
+
+  get(name) {
+    if (!this.store[name]) {
+      throw new Error(`Card does not exist: ${name}`);
+    }
+    return this.store[name];
+  }
 }
