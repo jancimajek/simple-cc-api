@@ -29,3 +29,14 @@ describe('Charge card', () => {
     expect(() => card.charge(1000.01)).toThrow('Credit limit exceeded for card number: 79927398713');
   });
 });
+
+describe('Credit card', () => {
+  it('should return correct balance', () => {
+    const card = new Card('name', 79927398713, 1000);
+    card.charge(100);
+
+    expect(card.credit(0.01)).toBe(99.99);
+    expect(card.credit(99.99)).toBe(0);
+    expect(card.credit(0.01)).toBe(-0.01);
+  });
+});

@@ -22,4 +22,8 @@ export default class Card {
     this.balance = Math.round((this.balance + ammount) * 100) / 100;
     return this.balance;
   }
+
+  credit(ammount) {
+    return this.charge(-ammount);
+  }
 }
